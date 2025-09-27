@@ -86,7 +86,7 @@ if __name__ == "__main__":
 
     # When you deploy the endpoint, make sure to expose port 5000
     # And add it as an environment variable in the Runpod console
-    port = int(os.getenv("PORT", "8080"))
+    port = int(os.getenv("PORT", "5000"))
 
     # Start the server
     uvicorn.run(app, host="0.0.0.0", port=port)
