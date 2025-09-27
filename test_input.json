@@ -1,0 +1,14 @@
+{
+    "input": {
+        "messages": [
+            {
+                "role": "system",
+                "content": "You are a helpful AI assistant."
+            },
+            {
+                "role": "user",
+                "content": "Tell me a nice long story please."
+            }
+        ]
+    }
+}
