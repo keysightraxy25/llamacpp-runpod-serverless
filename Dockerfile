@@ -15,7 +15,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 ENV CUDA_STUBS=/usr/local/cuda/targets/x86_64-linux/lib/stubs
 RUN ln -sf ${CUDA_STUBS}/libcuda.so /usr/lib/x86_64-linux-gnu/libcuda.so.1
-#EXPOSE 8080
+EXPOSE 8080
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -33,7 +33,8 @@ RUN pip install --no-cache-dir runpod
 
 WORKDIR ${APP_DIR}
 
-#RUN wget https://huggingface.co/unsloth/gemma-3-270m-it-qat-GGUF/resolve/main/gemma-3-270m-it-qat-UD-Q8_K_XL.gguf
+# Downloading gemma-3-27B Q4
+RUN wget https://huggingface.co/unsloth/gemma-3-270m-it-qat-GGUF/resolve/main/gemma-3-270m-it-qat-UD-Q8_K_XL.gguf
 RUN wget https://huggingface.co/unsloth/DeepSeek-R1-0528-Qwen3-8B-GGUF/resolve/main/DeepSeek-R1-0528-Qwen3-8B-Q8_0.gguf
 
 #COPY handle.py ${APP_DIR}/handle.py
