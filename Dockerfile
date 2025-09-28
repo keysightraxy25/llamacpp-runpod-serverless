@@ -25,7 +25,7 @@ RUN apt-get update && \
 RUN python3.12 -m venv $VIRTUAL_ENV && \
     $VIRTUAL_ENV/bin/pip install --upgrade pip
 
-RUN CMAKE_ARGS="-DGGML_CUDA=on -DGGML_BLAS=ON -DGGML_BLAS_VENDOR=OpenBLAS -DCMAKE_CUDA_ARCHITECTURES=default" pip install llama-cpp-python
+RUN CMAKE_ARGS="-DGGML_CUDA=on -DGGML_BLAS=ON -DGGML_BLAS_VENDOR=OpenBLAS -DCMAKE_CUDA_ARCHITECTURES=all" pip install llama-cpp-python
 RUN rm -rf ${CUDA_STUBS}/libcuda.so
 RUN pip install --no-cache-dir runpod
 
