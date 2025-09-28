@@ -1,7 +1,5 @@
 FROM nvidia/cuda:12.8.1-cudnn-devel-ubuntu24.04
 
-
-ARG CUDAARCHS="100;90;89;86;80;75"
 ARG APP_DIR=/app
 ARG MODEL_ROOT=/models
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -27,7 +25,7 @@ RUN apt-get update && \
 RUN python3.12 -m venv $VIRTUAL_ENV && \
     $VIRTUAL_ENV/bin/pip install --upgrade pip
 
-RUN CMAKE_ARGS="-DGGML_CUDA=on -DGGML_BLAS=ON -DGGML_BLAS_VENDOR=OpenBLAS" pip install llama-cpp-python
+RUN CMAKE_ARGS="-DGGML_CUDA=on -DGGML_BLAS=ON -DGGML_BLAS_VENDOR=OpenBLAS -DCMAKE_CUDA_ARCHITECTURES=default" pip install llama-cpp-python
 RUN mkdir -p $MODEL_ROOT
 RUN pip install --no-cache-dir runpod
 
