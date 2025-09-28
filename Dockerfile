@@ -33,9 +33,11 @@ RUN pip install --no-cache-dir runpod
 
 WORKDIR ${APP_DIR}
 
-# Downloading gemma-3-27B Q4
 RUN wget https://huggingface.co/unsloth/gemma-3-270m-it-qat-GGUF/resolve/main/gemma-3-270m-it-qat-UD-Q8_K_XL.gguf
 RUN wget https://huggingface.co/unsloth/DeepSeek-R1-0528-Qwen3-8B-GGUF/resolve/main/DeepSeek-R1-0528-Qwen3-8B-Q8_0.gguf
+RUN wget https://huggingface.co/unsloth/gemma-3-27b-it-qat-GGUF/resolve/main/gemma-3-27b-it-qat-UD-Q8_K_XL.gguf
+RUN wget https://huggingface.co/unsloth/gpt-oss-20b-GGUF/resolve/main/gpt-oss-20b-Q8_0.gguf
+RUN wget https://huggingface.co/ggml-org/Qwen3-30B-A3B-Instruct-2507-Q8_0-GGUF/resolve/main/qwen3-30b-a3b-instruct-2507-q8_0.gguf
 
 COPY handle.py ${APP_DIR}/handle.py
 COPY test_input.json ${APP_DIR}/test_input.json
