@@ -37,9 +37,8 @@ WORKDIR ${APP_DIR}
 RUN wget https://huggingface.co/unsloth/gemma-3-270m-it-qat-GGUF/resolve/main/gemma-3-270m-it-qat-UD-Q8_K_XL.gguf
 RUN wget https://huggingface.co/unsloth/DeepSeek-R1-0528-Qwen3-8B-GGUF/resolve/main/DeepSeek-R1-0528-Qwen3-8B-Q8_0.gguf
 
-#COPY handle.py ${APP_DIR}/handle.py
-#COPY test_input.json ${APP_DIR}/test_input.json
-COPY app.py ${APP_DIR}/app.py
+COPY handle.py ${APP_DIR}/handle.py
+COPY test_input.json ${APP_DIR}/test_input.json
 
-CMD ["python", "-u", "app.py"]
+CMD ["python", "-u", "handle.py"]
 
