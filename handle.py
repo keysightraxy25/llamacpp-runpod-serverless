@@ -8,7 +8,7 @@ args = json.loads(os.environ.get("LLAMA_ARGS", "{}"))
 args.setdefault("n_ctx", 32768)
 args.setdefault("n_gpu_layers", -1)
 args.setdefault("flash_attn", True)
-args.setdefault("model_path", "DeepSeek-R1-0528-Qwen3-8B-Q8_0.gguf")
+args.setdefault("model_path", "gemma-3-27b-it-qat-UD-Q8_K_XL.gguf")
 llm = Llama(**args)
 
 def handler(event):
