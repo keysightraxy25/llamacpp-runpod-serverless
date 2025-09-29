@@ -25,15 +25,15 @@ RUN apt-get update && \
 RUN python3.12 -m venv $VIRTUAL_ENV && \
     $VIRTUAL_ENV/bin/pip install --upgrade pip
 
-RUN CMAKE_ARGS="-DGGML_CUDA=on -DGGML_BLAS=ON -DGGML_BLAS_VENDOR=OpenBLAS -DCMAKE_CUDA_ARCHITECTURES=all" pip install llama-cpp-python
+RUN CMAKE_ARGS="-DGGML_CUDA=on -DGGML_BLAS=ON -DGGML_BLAS_VENDOR=OpenBLAS -DCMAKE_CUDA_ARCHITECTURES=all" pip install --verbose llama-cpp-python
 RUN rm -rf ${CUDA_STUBS}/libcuda.so
 RUN pip install --no-cache-dir runpod
 
 WORKDIR ${APP_DIR}
 
 #RUN wget https://huggingface.co/unsloth/gemma-3-270m-it-qat-GGUF/resolve/main/gemma-3-270m-it-qat-UD-Q8_K_XL.gguf
-#RUN wget https://huggingface.co/unsloth/DeepSeek-R1-0528-Qwen3-8B-GGUF/resolve/main/DeepSeek-R1-0528-Qwen3-8B-Q8_0.gguf
-RUN wget https://huggingface.co/unsloth/gemma-3-27b-it-qat-GGUF/resolve/main/gemma-3-27b-it-qat-UD-Q8_K_XL.gguf
+RUN wget https://huggingface.co/unsloth/DeepSeek-R1-0528-Qwen3-8B-GGUF/resolve/main/DeepSeek-R1-0528-Qwen3-8B-Q8_0.gguf
+#RUN wget https://huggingface.co/unsloth/gemma-3-27b-it-qat-GGUF/resolve/main/gemma-3-27b-it-qat-UD-Q8_K_XL.gguf
 #RUN wget https://huggingface.co/unsloth/gpt-oss-20b-GGUF/resolve/main/gpt-oss-20b-Q8_0.gguf
 #RUN wget https://huggingface.co/ggml-org/Qwen3-30B-A3B-Instruct-2507-Q8_0-GGUF/resolve/main/qwen3-30b-a3b-instruct-2507-q8_0.gguf
 
