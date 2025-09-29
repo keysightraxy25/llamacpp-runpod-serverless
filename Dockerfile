@@ -1,7 +1,5 @@
-FROM nvidia/cuda:12.8.1-cudnn-devel-ubuntu24.04
+FROM nvidia/cuda:12.8.1-devel-ubuntu24.04
 
-ARG APP_DIR=/app
-ARG MODEL_ROOT=/models
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
@@ -11,8 +9,6 @@ ENV DEBIAN_FRONTEND=noninteractive \
     VIRTUAL_ENV=/opt/venv \
     PATH="/opt/venv/bin:$PATH"
 
-ENV CUDA_STUBS=/usr/local/cuda/targets/x86_64-linux/lib/stubs
-RUN ln -sf ${CUDA_STUBS}/libcuda.so /usr/lib/x86_64-linux-gnu/libcuda.so.1
 EXPOSE 8080
 
 RUN apt-get update && \
@@ -25,20 +21,19 @@ RUN apt-get update && \
 RUN python3.12 -m venv $VIRTUAL_ENV && \
     $VIRTUAL_ENV/bin/pip install --upgrade pip
 
-RUN CMAKE_ARGS="-DGGML_CUDA=on -DGGML_BLAS=ON -DGGML_BLAS_VENDOR=OpenBLAS -DCMAKE_CUDA_ARCHITECTURES=all" pip install --verbose llama-cpp-python
-RUN rm -rf ${CUDA_STUBS}/libcuda.so
+RUN export CUDA_STUBS=/usr/local/cuda/targets/x86_64-linux/lib/stubs; \
+    ln -sf ${CUDA_STUBS}/libcuda.so /usr/lib/x86_64-linux-gnu/libcuda.so.1; \
+    CMAKE_ARGS="-DGGML_CUDA=on -DGGML_BLAS=ON -DGGML_BLAS_VENDOR=OpenBLAS -DCMAKE_CUDA_ARCHITECTURES=all" pip install --verbose llama-cpp-python; \
+    rm -rf ${CUDA_STUBS}/libcuda.so
+
 RUN pip install --no-cache-dir runpod
 
-WORKDIR ${APP_DIR}
-
 #RUN wget https://huggingface.co/unsloth/gemma-3-270m-it-qat-GGUF/resolve/main/gemma-3-270m-it-qat-UD-Q8_K_XL.gguf
-RUN wget https://huggingface.co/unsloth/DeepSeek-R1-0528-Qwen3-8B-GGUF/resolve/main/DeepSeek-R1-0528-Qwen3-8B-Q8_0.gguf
+#RUN wget https://huggingface.co/unsloth/DeepSeek-R1-0528-Qwen3-8B-GGUF/resolve/main/DeepSeek-R1-0528-Qwen3-8B-Q8_0.gguf
 #RUN wget https://huggingface.co/unsloth/gemma-3-27b-it-qat-GGUF/resolve/main/gemma-3-27b-it-qat-UD-Q8_K_XL.gguf
 #RUN wget https://huggingface.co/unsloth/gpt-oss-20b-GGUF/resolve/main/gpt-oss-20b-Q8_0.gguf
 #RUN wget https://huggingface.co/ggml-org/Qwen3-30B-A3B-Instruct-2507-Q8_0-GGUF/resolve/main/qwen3-30b-a3b-instruct-2507-q8_0.gguf
 
-COPY handle.py ${APP_DIR}/handle.py
-COPY test_input.json ${APP_DIR}/test_input.json
-
-CMD ["python", "-u", "handle.py"]
-
+COPY handle.py test_input.json start.sh /
+RUN chmod +x /start.sh
+ENTRYPOINT /start.sh
