@@ -43,6 +43,7 @@ def delete_model(model_name: str):
     return {"status": "success", "message": f"Deleted {model_name}"}
 
 def set_model(model_name: str):
+    global llm
     new_model_path = os.path.join(MODEL_DIR, model_name)
     try:
         llm = Llama(model_path=new_model_path, **{k: v for k, v in args.items() if k != "model_path"})
@@ -64,7 +65,8 @@ def handler(event):
         return get_model_stats()
     
     if "del_model" in inp:
-        return delete_model(model_name="llama-2-7")
+        model_name = inp.get("get_model")
+        return delete_model(model_name)
     
     if "get_model"  in inp:
         url = inp.get("get_model")
