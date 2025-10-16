@@ -42,15 +42,6 @@ def delete_model(model_name: str):
     os.remove(path)
     return {"status": "success", "message": f"Deleted {model_name}"}
 
-def set_model(model_name: str):
-    global llm
-    new_model_path = os.path.join(MODEL_DIR, model_name)
-    try:
-        llm = Llama(model_path=new_model_path, **{k: v for k, v in args.items() if k != "model_path"})
-        return {"status": "success", "message": f"Switched to model '{model_name}'"}
-    except Exception as e:
-        return {"status": "error", "message": f"Failed to load model: {e}"}
-
 
 def handler(event):
     """
@@ -72,9 +63,6 @@ def handler(event):
         url = inp.get("get_model")
         return add_model(url)
     
-    if "set_model" in inp:
-        model_name = inp.get("set_model")
-        return set_model(model_name)
 
     inp.setdefault("max_tokens", 4096)
 
